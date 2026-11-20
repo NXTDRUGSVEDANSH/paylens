@@ -1,0 +1,264 @@
+# Known-answer evaluation set.
+#
+# Every `reference_sql` below is written BY HAND and independently of the compiler.
+# That is the whole point: if the eval reused the system's own SQL it would only
+# prove the system agrees with itself. Hand-written references catch the class of
+# error where a wrong join produces a number that happens to look plausible.
+#
+# `tables` is the set the reference needs. The system's answer may not touch MORE
+# than this (schema precision) — a right number reached through a fan-out join is
+# still a defect.
+#
+# `seeded: true` marks questions that are also in semantic/seeds.yaml, so the report
+# can separate "answered from the pre-seeded cache" from genuinely unseen questions.
+# Overall accuracy that mixes the two overstates the system.
+
+window: &lw "txn_ts >= '2026-11-09' AND txn_ts < '2026-11-16'"
+month: &oct "txn_ts >= '2026-10-01' AND txn_ts < '2026-11-01'"
+
+questions:
+  - id: g01
+    q: "what is our success rate"
+    seeded: true
+    kind: scalar
+    tables: [fact_transactions]
+    reference_sql: |
+      SELECT count(*) FILTER (WHERE status='SUCCESS')::DOUBLE
+             / count(*) FILTER (WHERE status IN ('SUCCESS','FAILED')) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1)
+      WHERE txn_ts >= '2026-11-09' AND txn_ts < '2026-11-16'
+
+  - id: g02
+    q: "success rate by payment method last week"
+    seeded: true
+    kind: set
+    key: payment_method
+    value: success_rate
+    tables: [fact_transactions, dim_payment_method]
+    reference_sql: |
+      SELECT pm.method AS k,
+             count(*) FILTER (WHERE t.status='SUCCESS')::DOUBLE
+             / count(*) FILTER (WHERE t.status IN ('SUCCESS','FAILED')) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      JOIN dim_payment_method pm ON pm.pm_id = t.pm_id
+      WHERE t.txn_ts >= '2026-11-09' AND t.txn_ts < '2026-11-16'
+      GROUP BY 1
+
+  - id: g03
+    q: "how many attempts did we process last week"
+    seeded: true
+    kind: scalar
+    tables: [fact_transactions]
+    reference_sql: |
+      SELECT count(*)::DOUBLE AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1)
+      WHERE txn_ts >= '2026-11-09' AND txn_ts < '2026-11-16'
+
+  - id: g04
+    q: "gmv by payment method last month"
+    seeded: true
+    kind: set
+    key: payment_method
+    value: gmv
+    tables: [fact_transactions, dim_payment_method]
+    reference_sql: |
+      SELECT pm.method AS k, sum(t.amount) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      JOIN dim_payment_method pm ON pm.pm_id = t.pm_id
+      WHERE t.txn_ts >= '2026-10-01' AND t.txn_ts < '2026-11-01'
+        AND t.status='SUCCESS' AND t.amount > 0
+      GROUP BY 1
+
+  - id: g05
+    q: "success rate by issuer bank last week"
+    seeded: true
+    kind: set
+    key: issuer_bank
+    value: success_rate
+    tables: [fact_transactions, dim_bank]
+    reference_sql: |
+      SELECT coalesce(b.bank_name, '(unknown issuer)') AS k,
+             count(*) FILTER (WHERE t.status='SUCCESS')::DOUBLE
+             / count(*) FILTER (WHERE t.status IN ('SUCCESS','FAILED')) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      LEFT JOIN dim_bank b ON b.bank_id = t.bank_id
+      WHERE t.txn_ts >= '2026-11-09' AND t.txn_ts < '2026-11-16'
+      GROUP BY 1
+
+  - id: g06
+    q: "failure rate by payment method last week"
+    seeded: true
+    kind: set
+    key: payment_method
+    value: failure_rate
+    tables: [fact_transactions, dim_payment_method]
+    reference_sql: |
+      SELECT pm.method AS k,
+             count(*) FILTER (WHERE t.status='FAILED')::DOUBLE
+             / count(*) FILTER (WHERE t.status IN ('SUCCESS','FAILED')) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      JOIN dim_payment_method pm ON pm.pm_id = t.pm_id
+      WHERE t.txn_ts >= '2026-11-09' AND t.txn_ts < '2026-11-16'
+      GROUP BY 1
+
+  - id: g07
+    q: "average latency by payment method last week"
+    seeded: true
+    kind: set
+    key: payment_method
+    value: avg_latency_ms
+    tables: [fact_transactions, dim_payment_method]
+    reference_sql: |
+      SELECT pm.method AS k, avg(t.latency_ms) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      JOIN dim_payment_method pm ON pm.pm_id = t.pm_id
+      WHERE t.txn_ts >= '2026-11-09' AND t.txn_ts < '2026-11-16'
+      GROUP BY 1
+
+  - id: g08
+    q: "success rate by merchant tier last week"
+    seeded: true
+    kind: set
+    key: merchant_tier
+    value: success_rate
+    tables: [fact_transactions, dim_merchant]
+    reference_sql: |
+      SELECT m.tier AS k,
+             count(*) FILTER (WHERE t.status='SUCCESS')::DOUBLE
+             / count(*) FILTER (WHERE t.status IN ('SUCCESS','FAILED')) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      JOIN dim_merchant m ON m.merchant_id = t.merchant_id
+      WHERE t.txn_ts >= '2026-11-09' AND t.txn_ts < '2026-11-16'
+      GROUP BY 1
+
+  # ── not in the seed set: genuinely unseen phrasings and shapes ────────────
+  - id: g09
+    q: "what was our approval rate for netbanking last week"
+    seeded: false
+    kind: scalar
+    tables: [fact_transactions, dim_payment_method]
+    reference_sql: |
+      SELECT count(*) FILTER (WHERE t.status='SUCCESS')::DOUBLE
+             / count(*) FILTER (WHERE t.status IN ('SUCCESS','FAILED')) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      JOIN dim_payment_method pm ON pm.pm_id = t.pm_id
+      WHERE t.txn_ts >= '2026-11-09' AND t.txn_ts < '2026-11-16'
+        AND pm.method = 'NETBANKING'
+
+  - id: g10
+    q: "retry rate last week"
+    seeded: false
+    kind: scalar
+    tables: [fact_transactions]
+    reference_sql: |
+      SELECT count(*) FILTER (WHERE is_retry)::DOUBLE / count(*) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1)
+      WHERE txn_ts >= '2026-11-09' AND txn_ts < '2026-11-16'
+
+  - id: g11
+    q: "total gmv last week"
+    seeded: false
+    kind: scalar
+    tables: [fact_transactions]
+    reference_sql: |
+      SELECT sum(amount) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1)
+      WHERE txn_ts >= '2026-11-09' AND txn_ts < '2026-11-16'
+        AND status='SUCCESS' AND amount > 0
+
+  # Deliberately phrased as a COUNT, not a rate. "Failure rate by failure category"
+  # is ill-posed: a failure code only exists on a failed attempt, so the rate within
+  # any category is definitionally 1.0. The semantic model now carries an implied
+  # `status = 'FAILED'` filter for these dimensions so the count is the real question.
+  - id: g12
+    q: "how many failed attempts by failure category last week"
+    seeded: false
+    kind: set
+    key: failure_category
+    value: txn_count
+    tables: [fact_transactions, dim_failure_code]
+    reference_sql: |
+      SELECT fc.category AS k, count(*)::DOUBLE AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      JOIN dim_failure_code fc ON fc.failure_code = t.failure_code
+      WHERE t.txn_ts >= '2026-11-09' AND t.txn_ts < '2026-11-16'
+        AND t.status = 'FAILED'
+      GROUP BY 1
+
+  - id: g13
+    q: "average ticket size by payment method last week"
+    seeded: true
+    kind: set
+    key: payment_method
+    value: avg_ticket
+    tables: [fact_transactions, dim_payment_method]
+    reference_sql: |
+      SELECT pm.method AS k,
+             sum(t.amount) FILTER (WHERE t.status='SUCCESS' AND t.amount>0)
+             / count(*) FILTER (WHERE t.status='SUCCESS' AND t.amount>0) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      JOIN dim_payment_method pm ON pm.pm_id = t.pm_id
+      WHERE t.txn_ts >= '2026-11-09' AND t.txn_ts < '2026-11-16'
+      GROUP BY 1
+
+  - id: g14
+    q: "success rate by state last week"
+    seeded: true
+    kind: set
+    key: state
+    value: success_rate
+    tables: [fact_transactions, dim_merchant]
+    reference_sql: |
+      SELECT m.state AS k,
+             count(*) FILTER (WHERE t.status='SUCCESS')::DOUBLE
+             / count(*) FILTER (WHERE t.status IN ('SUCCESS','FAILED')) AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1) t
+      JOIN dim_merchant m ON m.merchant_id = t.merchant_id
+      WHERE t.txn_ts >= '2026-11-09' AND t.txn_ts < '2026-11-16'
+      GROUP BY 1
+
+  - id: g15
+    q: "how many attempts did merchant M-1042 make in October"
+    seeded: false
+    kind: scalar
+    tables: [fact_transactions]
+    reference_sql: |
+      SELECT count(*)::DOUBLE AS v
+      FROM (SELECT * FROM fact_transactions
+            QUALIFY row_number() OVER (PARTITION BY txn_id ORDER BY ingested_at DESC)=1)
+      WHERE txn_ts >= '2026-10-01' AND txn_ts < '2026-11-01'
+        AND merchant_id = 'M-1042'
+
+# ── decomposition: the headline capability, checked numerically ─────────────
+decomposition:
+  - id: d01
+    q: "why did our overall success rate drop last week"
+    dimension: payment_method
+    expect:
+      delta_pp: -1.33
+      mix_pp: -1.23
+      rate_pp: -0.10
+      mix_share_pct: 92.9
+    tolerance: { delta_pp: 0.20, mix_pp: 0.20, rate_pp: 0.15, mix_share_pct: 5.0 }
+
+# ── ambiguity: did it ASK, or state the assumption? ─────────────────────────
+ambiguity:
+  - { id: a01, q: "what's our success rate",            expect_kinds: [time_window, denominator] }
+  - { id: a02, q: "how are we doing",                   expect_kinds: [time_window] }
+  - { id: a03, q: "success rate",                       expect_kinds: [time_window, denominator] }
+  - { id: a04, q: "show me gmv",                        expect_kinds: [time_window] }
+  - { id: a05, q: "what happened this week",            expect_kinds: [time_window] }

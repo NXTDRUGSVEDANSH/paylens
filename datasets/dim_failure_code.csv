@@ -1,0 +1,8 @@
+failure_code,category,description,is_retriable,owner,decline_class
+F-101,insufficient_funds,Insufficient funds,True,issuer,business
+F-102,issuer_decline,Issuer declined the request,True,issuer,business
+F-103,limit_exceeded,Transaction exceeds stipulated limit,True,issuer,business
+F-104,invalid_credential,Incorrect PIN or VPA,False,merchant,business
+F-105,risk_block,Blocked by risk engine,False,network,business
+F-106,timeout,Issuer or NPCI response timeout,True,issuer,technical
+F-107,technical_error,Acquirer or switch technical error,True,acquirer,technical

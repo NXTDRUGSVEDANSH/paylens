@@ -1,0 +1,88 @@
+# Action catalogue for the Action Engine.
+#
+# Recommendations are SELECTED from this catalogue, never free-generated. Three
+# reasons: each one cites the precondition that fired (auditable), each carries an
+# owning team (a recommendation with no owner never gets actioned), and the model
+# cannot propose something the business is unable to do.
+#
+# The LLM's only job is to rank the applicable actions and write the one-line
+# justification tying each to the observed numbers.
+
+actions:
+  - id: audit_routing_config
+    when: mix_dominant
+    action: >
+      Audit the checkout and routing configuration for this window. Payment
+      processing did not degrade — traffic composition changed.
+    owner: Product / Routing
+    rationale_template: >
+      {mix_share:.0f}% of the {delta:.2f}pp move is traffic mix, and every rail's own
+      success rate stayed within {max_drift:.2f}pp. That points upstream of payments.
+    roles: [cxo, regional_manager, analyst, merchant_user]
+
+  - id: issuer_ticket
+    when: rate_dominant_single_issuer
+    action: >
+      Raise an issuer ticket for {top_segment} and consider temporarily re-routing
+      its volume while it is degraded.
+    owner: Payment Ops
+    rationale_template: >
+      {top_segment} contributed {top_contribution:.2f}pp of the change through its own
+      success rate, not through volume shift.
+    roles: [cxo, regional_manager, analyst]
+
+  - id: enable_smart_retry
+    when: high_retriable_failure_share
+    action: >
+      Extend smart retry to the retriable decline codes concentrated in this window.
+    owner: Payment Ops
+    rationale_template: >
+      {retriable_pct:.0f}% of failures in this window carry retriable codes.
+    roles: [cxo, analyst, merchant_user]
+
+  - id: investigate_acquirer_capacity
+    when: timeout_rising_with_latency
+    action: Investigate acquirer capacity and switch-level timeouts.
+    owner: Engineering
+    rationale_template: >
+      Timeout-class failures rose alongside average latency, which is a capacity
+      signature rather than a customer-behaviour one.
+    roles: [cxo, analyst]
+
+  - id: shift_acquirer_volume
+    when: acquirer_underperforms_on_same_mix
+    action: A/B shift a slice of volume toward the better-performing acquirer.
+    owner: Payment Ops
+    rationale_template: >
+      One acquirer underperforms on comparable traffic mix, so the gap is not
+      explained by what it is being sent.
+    roles: [cxo, analyst]
+
+  - id: review_risk_thresholds
+    when: risk_block_share_rising_low_risk_tier
+    action: >
+      Review risk-engine thresholds for this segment — these look like false positives.
+    owner: Risk
+    rationale_template: >
+      Risk-block declines are rising on a merchant tier with a low risk band.
+    roles: [cxo, analyst]
+
+  - id: reconcile_settlement_gap
+    when: settlement_disagreement
+    action: >
+      Reconcile the refunded and held settlement batches with finance before using
+      settlement counts for reporting.
+    owner: Finance Ops
+    rationale_template: >
+      Settlement and transaction counts disagree for {affected_n} merchant(s) in this
+      window; transactions is the system of record at attempt grain.
+    roles: [cxo, analyst]
+
+  - id: no_action_needed
+    when: no_material_change
+    action: No action needed — the movement is within normal variation.
+    owner: —
+    rationale_template: >
+      The change of {delta:.2f}pp is small relative to this metric's usual week-to-week
+      movement.
+    roles: [cxo, regional_manager, analyst, merchant_user]

@@ -1,0 +1,241 @@
+merchant_id,merchant_name,mcc,category,city,state,region,tier,onboarded_at,risk_band
+M-1000,Entertainment Store 001,5712,Entertainment,Ahmedabad,Gujarat,West,sme,2025-12-24,low
+M-1001,Utilities Store 002,5863,Utilities,Kolkata,West Bengal,East,sme,2025-11-10,low
+M-1002,Fashion Store 003,5556,Fashion,Jaipur,Rajasthan,West,mid,2024-11-04,low
+M-1003,Electronics Store 004,5119,Electronics,Patna,Bihar,East,sme,2025-04-12,medium
+M-1004,Pharmacy Store 005,5425,Pharmacy,Guwahati,Assam,East,sme,2024-07-08,low
+M-1005,Fuel Store 006,5709,Fuel,Gurugram,Haryana,North,mid,2024-11-10,high
+M-1006,Education Store 007,5826,Education,Gurugram,Haryana,North,sme,2025-03-14,low
+M-1007,Entertainment Store 008,5275,Entertainment,New Delhi,Delhi,North,enterprise,2024-09-21,low
+M-1008,Food Delivery Store 009,5699,Food Delivery,Lucknow,Uttar Pradesh,North,mid,2026-01-17,low
+M-1009,Travel Store 010,5486,Travel,Bhubaneswar,Odisha,East,sme,2025-03-17,low
+M-1010,Electronics Store 011,5024,Electronics,Kolkata,West Bengal,East,sme,2025-06-09,high
+M-1011,Utilities Store 012,5601,Utilities,Ahmedabad,Gujarat,West,enterprise,2025-04-04,medium
+M-1012,Travel Store 013,5178,Travel,Hyderabad,Telangana,South,mid,2024-09-25,low
+M-1013,Entertainment Store 014,5149,Entertainment,Hyderabad,Telangana,South,mid,2025-10-05,medium
+M-1014,Fashion Store 015,5255,Fashion,Ludhiana,Punjab,North,sme,2026-01-01,medium
+M-1015,Food Delivery Store 016,5077,Food Delivery,Ludhiana,Punjab,North,sme,2025-07-30,high
+M-1016,Pharmacy Store 017,5336,Pharmacy,Ahmedabad,Gujarat,West,enterprise,2025-10-25,low
+M-1017,Fashion Store 018,5542,Fashion,Ahmedabad,Gujarat,West,sme,2025-11-16,low
+M-1018,Pharmacy Store 019,5079,Pharmacy,Kolkata,West Bengal,East,sme,2026-05-31,low
+M-1019,Fuel Store 020,5410,Fuel,Patna,Bihar,East,mid,2026-05-08,low
+M-1020,Electronics Store 021,5724,Electronics,Guwahati,Assam,East,mid,2024-10-11,high
+M-1021,Fuel Store 022,5533,Fuel,Jaipur,Rajasthan,West,sme,2026-02-04,high
+M-1022,Fuel Store 023,5090,Fuel,Chennai,Tamil Nadu,South,sme,2025-03-01,low
+M-1023,Entertainment Store 024,5606,Entertainment,Patna,Bihar,East,sme,2025-08-17,low
+M-1024,Pharmacy Store 025,5838,Pharmacy,Ludhiana,Punjab,North,enterprise,2024-11-27,high
+M-1025,Groceries Store 026,5376,Groceries,Ahmedabad,Gujarat,West,sme,2025-02-21,medium
+M-1026,Groceries Store 027,5244,Groceries,Chennai,Tamil Nadu,South,sme,2025-08-15,medium
+M-1027,Education Store 028,5820,Education,Lucknow,Uttar Pradesh,North,sme,2026-03-28,high
+M-1028,Entertainment Store 029,5403,Entertainment,Ludhiana,Punjab,North,sme,2024-12-05,medium
+M-1029,Education Store 030,5731,Education,Guwahati,Assam,East,sme,2026-01-09,low
+M-1030,Fashion Store 031,5685,Fashion,Kolkata,West Bengal,East,sme,2025-11-10,medium
+M-1031,Education Store 032,5068,Education,Bhubaneswar,Odisha,East,mid,2024-09-24,low
+M-1032,Travel Store 033,5094,Travel,Ahmedabad,Gujarat,West,enterprise,2024-04-29,medium
+M-1033,Travel Store 034,5447,Travel,Hyderabad,Telangana,South,sme,2025-02-28,high
+M-1034,Fuel Store 035,5447,Fuel,Gurugram,Haryana,North,enterprise,2025-05-18,high
+M-1035,Pharmacy Store 036,5354,Pharmacy,Patna,Bihar,East,mid,2025-12-28,low
+M-1036,Fuel Store 037,5865,Fuel,Kolkata,West Bengal,East,enterprise,2025-02-20,medium
+M-1037,Food Delivery Store 038,5465,Food Delivery,Mumbai,Maharashtra,West,enterprise,2024-03-02,low
+M-1038,Entertainment Store 039,5179,Entertainment,Patna,Bihar,East,enterprise,2025-03-14,medium
+M-1039,Entertainment Store 040,5237,Entertainment,Ahmedabad,Gujarat,West,enterprise,2024-07-12,high
+M-1040,Groceries Store 041,5873,Groceries,New Delhi,Delhi,North,enterprise,2024-12-20,medium
+M-1041,Travel Store 042,5186,Travel,Gurugram,Haryana,North,sme,2024-06-24,high
+M-1042,Pharmacy Store 043,5724,Pharmacy,Chennai,Tamil Nadu,South,enterprise,2024-08-19,low
+M-1043,Electronics Store 044,5434,Electronics,Patna,Bihar,East,mid,2026-01-12,high
+M-1044,Pharmacy Store 045,5227,Pharmacy,Kochi,Kerala,South,sme,2024-01-17,high
+M-1045,Utilities Store 046,5558,Utilities,Jaipur,Rajasthan,West,mid,2025-03-20,low
+M-1046,Entertainment Store 047,5589,Entertainment,Patna,Bihar,East,mid,2025-10-29,low
+M-1047,Groceries Store 048,5517,Groceries,Ludhiana,Punjab,North,mid,2024-07-31,low
+M-1048,Fuel Store 049,5425,Fuel,Guwahati,Assam,East,mid,2025-04-15,high
+M-1049,Pharmacy Store 050,5336,Pharmacy,New Delhi,Delhi,North,mid,2026-03-13,medium
+M-1050,Utilities Store 051,5360,Utilities,Kolkata,West Bengal,East,mid,2024-09-05,low
+M-1051,Travel Store 052,5300,Travel,Lucknow,Uttar Pradesh,North,sme,2026-05-04,medium
+M-1052,Fuel Store 053,5265,Fuel,Mumbai,Maharashtra,West,enterprise,2024-10-03,high
+M-1053,Fashion Store 054,5722,Fashion,Hyderabad,Telangana,South,mid,2026-06-23,low
+M-1054,Electronics Store 055,5371,Electronics,Jaipur,Rajasthan,West,enterprise,2025-02-01,medium
+M-1055,Travel Store 056,5408,Travel,Patna,Bihar,East,mid,2026-01-26,low
+M-1056,Fuel Store 057,5162,Fuel,Mumbai,Maharashtra,West,enterprise,2025-12-15,high
+M-1057,Fashion Store 058,5760,Fashion,Hyderabad,Telangana,South,sme,2024-02-01,low
+M-1058,Electronics Store 059,5740,Electronics,Ahmedabad,Gujarat,West,mid,2024-03-01,low
+M-1059,Travel Store 060,5100,Travel,Jaipur,Rajasthan,West,mid,2025-07-22,high
+M-1060,Food Delivery Store 061,5066,Food Delivery,Lucknow,Uttar Pradesh,North,sme,2024-06-15,low
+M-1061,Utilities Store 062,5248,Utilities,Guwahati,Assam,East,mid,2024-06-21,low
+M-1062,Travel Store 063,5282,Travel,Jaipur,Rajasthan,West,mid,2025-06-01,high
+M-1063,Food Delivery Store 064,5485,Food Delivery,New Delhi,Delhi,North,enterprise,2024-12-04,medium
+M-1064,Education Store 065,5456,Education,Ludhiana,Punjab,North,mid,2026-04-18,low
+M-1065,Pharmacy Store 066,5265,Pharmacy,Ludhiana,Punjab,North,enterprise,2025-03-05,medium
+M-1066,Food Delivery Store 067,5242,Food Delivery,Hyderabad,Telangana,South,sme,2026-05-02,high
+M-1067,Groceries Store 068,5550,Groceries,Ahmedabad,Gujarat,West,sme,2024-12-28,medium
+M-1068,Utilities Store 069,5580,Utilities,Chennai,Tamil Nadu,South,sme,2026-02-27,low
+M-1069,Groceries Store 070,5311,Groceries,Chennai,Tamil Nadu,South,enterprise,2024-10-08,medium
+M-1070,Entertainment Store 071,5408,Entertainment,New Delhi,Delhi,North,sme,2024-03-03,low
+M-1071,Education Store 072,5590,Education,Chennai,Tamil Nadu,South,enterprise,2026-01-13,low
+M-1072,Groceries Store 073,5707,Groceries,Mumbai,Maharashtra,West,sme,2024-11-24,low
+M-1073,Pharmacy Store 074,5646,Pharmacy,Lucknow,Uttar Pradesh,North,sme,2026-05-07,low
+M-1074,Fashion Store 075,5732,Fashion,Jaipur,Rajasthan,West,sme,2026-02-23,low
+M-1075,Education Store 076,5187,Education,Ludhiana,Punjab,North,sme,2024-03-22,low
+M-1076,Food Delivery Store 077,5764,Food Delivery,Bengaluru,Karnataka,South,mid,2025-11-11,medium
+M-1077,Pharmacy Store 078,5128,Pharmacy,New Delhi,Delhi,North,mid,2025-09-29,low
+M-1078,Entertainment Store 079,5173,Entertainment,Jaipur,Rajasthan,West,sme,2024-02-03,low
+M-1079,Pharmacy Store 080,5751,Pharmacy,Mumbai,Maharashtra,West,sme,2024-09-23,high
+M-1080,Fuel Store 081,5219,Fuel,Ahmedabad,Gujarat,West,mid,2024-12-20,medium
+M-1081,Pharmacy Store 082,5446,Pharmacy,Chennai,Tamil Nadu,South,sme,2024-12-28,medium
+M-1082,Utilities Store 083,5674,Utilities,Gurugram,Haryana,North,mid,2024-11-28,low
+M-1083,Pharmacy Store 084,5506,Pharmacy,Ludhiana,Punjab,North,enterprise,2025-11-21,low
+M-1084,Education Store 085,5520,Education,Lucknow,Uttar Pradesh,North,sme,2025-06-26,low
+M-1085,Electronics Store 086,5684,Electronics,Chennai,Tamil Nadu,South,mid,2024-10-25,high
+M-1086,Food Delivery Store 087,5173,Food Delivery,Kochi,Kerala,South,sme,2025-03-03,high
+M-1087,Education Store 088,5088,Education,Hyderabad,Telangana,South,sme,2026-04-19,low
+M-1088,Food Delivery Store 089,5219,Food Delivery,Ahmedabad,Gujarat,West,mid,2025-12-14,high
+M-1089,Pharmacy Store 090,5184,Pharmacy,Bengaluru,Karnataka,South,enterprise,2025-08-09,high
+M-1090,Electronics Store 091,5786,Electronics,Kolkata,West Bengal,East,enterprise,2024-08-14,low
+M-1091,Pharmacy Store 092,5868,Pharmacy,Jaipur,Rajasthan,West,mid,2025-11-21,low
+M-1092,Groceries Store 093,5197,Groceries,Jaipur,Rajasthan,West,mid,2024-03-03,low
+M-1093,Fuel Store 094,5480,Fuel,Mumbai,Maharashtra,West,enterprise,2024-09-12,high
+M-1094,Groceries Store 095,5137,Groceries,Lucknow,Uttar Pradesh,North,sme,2025-05-19,low
+M-1095,Pharmacy Store 096,5432,Pharmacy,Guwahati,Assam,East,sme,2026-06-22,medium
+M-1096,Food Delivery Store 097,5799,Food Delivery,Jaipur,Rajasthan,West,sme,2025-05-28,low
+M-1097,Food Delivery Store 098,5230,Food Delivery,Chennai,Tamil Nadu,South,enterprise,2026-01-29,medium
+M-1098,Travel Store 099,5829,Travel,Bhubaneswar,Odisha,East,enterprise,2025-10-21,high
+M-1099,Food Delivery Store 100,5820,Food Delivery,Kochi,Kerala,South,sme,2024-03-07,low
+M-1100,Entertainment Store 101,5510,Entertainment,Jaipur,Rajasthan,West,sme,2024-08-04,medium
+M-1101,Travel Store 102,5512,Travel,Bhubaneswar,Odisha,East,enterprise,2024-11-25,low
+M-1102,Electronics Store 103,5315,Electronics,Jaipur,Rajasthan,West,sme,2026-04-07,high
+M-1103,Fashion Store 104,5244,Fashion,Guwahati,Assam,East,sme,2025-08-29,low
+M-1104,Travel Store 105,5629,Travel,Bengaluru,Karnataka,South,sme,2025-02-18,low
+M-1105,Utilities Store 106,5715,Utilities,Mumbai,Maharashtra,West,enterprise,2025-07-10,medium
+M-1106,Fashion Store 107,5130,Fashion,Bengaluru,Karnataka,South,enterprise,2025-09-01,high
+M-1107,Food Delivery Store 108,5779,Food Delivery,Bhubaneswar,Odisha,East,mid,2025-01-29,high
+M-1108,Food Delivery Store 109,5323,Food Delivery,Guwahati,Assam,East,sme,2025-07-11,low
+M-1109,Groceries Store 110,5572,Groceries,Guwahati,Assam,East,mid,2024-11-02,low
+M-1110,Groceries Store 111,5441,Groceries,Chennai,Tamil Nadu,South,sme,2024-06-11,low
+M-1111,Groceries Store 112,5577,Groceries,Ludhiana,Punjab,North,mid,2025-09-15,low
+M-1112,Electronics Store 113,5064,Electronics,Ahmedabad,Gujarat,West,mid,2024-03-22,medium
+M-1113,Electronics Store 114,5729,Electronics,Kolkata,West Bengal,East,mid,2025-04-05,low
+M-1114,Food Delivery Store 115,5675,Food Delivery,Lucknow,Uttar Pradesh,North,enterprise,2025-04-09,low
+M-1115,Pharmacy Store 116,5217,Pharmacy,Bhubaneswar,Odisha,East,mid,2024-05-15,low
+M-1116,Education Store 117,5524,Education,Kochi,Kerala,South,mid,2026-03-07,low
+M-1117,Pharmacy Store 118,5656,Pharmacy,Ludhiana,Punjab,North,enterprise,2026-03-30,low
+M-1118,Education Store 119,5068,Education,Gurugram,Haryana,North,sme,2024-07-25,medium
+M-1119,Entertainment Store 120,5788,Entertainment,Ludhiana,Punjab,North,sme,2024-06-17,high
+M-1120,Pharmacy Store 121,5594,Pharmacy,Ahmedabad,Gujarat,West,mid,2024-05-17,low
+M-1121,Groceries Store 122,5687,Groceries,Mumbai,Maharashtra,West,sme,2025-08-26,medium
+M-1122,Groceries Store 123,5516,Groceries,Kochi,Kerala,South,sme,2026-06-04,medium
+M-1123,Food Delivery Store 124,5043,Food Delivery,Bengaluru,Karnataka,South,enterprise,2025-06-21,low
+M-1124,Fashion Store 125,5316,Fashion,Kolkata,West Bengal,East,enterprise,2026-05-14,medium
+M-1125,Utilities Store 126,5064,Utilities,Guwahati,Assam,East,sme,2024-11-25,low
+M-1126,Food Delivery Store 127,5324,Food Delivery,New Delhi,Delhi,North,mid,2024-10-11,low
+M-1127,Food Delivery Store 128,5726,Food Delivery,Bengaluru,Karnataka,South,enterprise,2025-08-07,medium
+M-1128,Electronics Store 129,5319,Electronics,Chennai,Tamil Nadu,South,sme,2024-04-23,medium
+M-1129,Fuel Store 130,5229,Fuel,Patna,Bihar,East,mid,2025-07-16,medium
+M-1130,Utilities Store 131,5663,Utilities,Jaipur,Rajasthan,West,mid,2026-05-08,medium
+M-1131,Fuel Store 132,5394,Fuel,Patna,Bihar,East,sme,2025-11-16,high
+M-1132,Utilities Store 133,5584,Utilities,Patna,Bihar,East,sme,2024-11-15,medium
+M-1133,Food Delivery Store 134,5261,Food Delivery,Gurugram,Haryana,North,enterprise,2025-11-07,low
+M-1134,Utilities Store 135,5408,Utilities,Jaipur,Rajasthan,West,sme,2026-04-26,high
+M-1135,Electronics Store 136,5670,Electronics,Kolkata,West Bengal,East,sme,2024-07-30,high
+M-1136,Fashion Store 137,5014,Fashion,Guwahati,Assam,East,enterprise,2026-02-04,high
+M-1137,Pharmacy Store 138,5344,Pharmacy,Gurugram,Haryana,North,sme,2024-07-31,low
+M-1138,Fashion Store 139,5285,Fashion,Mumbai,Maharashtra,West,mid,2025-07-19,high
+M-1139,Pharmacy Store 140,5188,Pharmacy,New Delhi,Delhi,North,enterprise,2026-05-24,low
+M-1140,Fuel Store 141,5569,Fuel,Kolkata,West Bengal,East,sme,2026-01-29,low
+M-1141,Utilities Store 142,5069,Utilities,Chennai,Tamil Nadu,South,mid,2024-12-23,high
+M-1142,Food Delivery Store 143,5711,Food Delivery,Mumbai,Maharashtra,West,mid,2024-08-28,high
+M-1143,Fashion Store 144,5874,Fashion,Mumbai,Maharashtra,West,enterprise,2024-02-28,high
+M-1144,Groceries Store 145,5872,Groceries,New Delhi,Delhi,North,enterprise,2024-04-17,medium
+M-1145,Travel Store 146,5697,Travel,Chennai,Tamil Nadu,South,sme,2025-04-27,high
+M-1146,Groceries Store 147,5710,Groceries,Hyderabad,Telangana,South,mid,2025-08-01,low
+M-1147,Groceries Store 148,5027,Groceries,Mumbai,Maharashtra,West,enterprise,2025-02-09,low
+M-1148,Pharmacy Store 149,5718,Pharmacy,Jaipur,Rajasthan,West,enterprise,2026-04-29,medium
+M-1149,Entertainment Store 150,5655,Entertainment,Bengaluru,Karnataka,South,sme,2026-04-29,high
+M-1150,Pharmacy Store 151,5361,Pharmacy,Bengaluru,Karnataka,South,sme,2024-02-25,low
+M-1151,Pharmacy Store 152,5648,Pharmacy,Jaipur,Rajasthan,West,enterprise,2025-10-02,low
+M-1152,Pharmacy Store 153,5422,Pharmacy,Bhubaneswar,Odisha,East,enterprise,2024-10-01,medium
+M-1153,Utilities Store 154,5113,Utilities,Gurugram,Haryana,North,enterprise,2024-08-17,high
+M-1154,Education Store 155,5799,Education,Lucknow,Uttar Pradesh,North,mid,2024-04-06,low
+M-1155,Education Store 156,5473,Education,Lucknow,Uttar Pradesh,North,sme,2024-01-30,high
+M-1156,Education Store 157,5016,Education,Bhubaneswar,Odisha,East,mid,2024-05-25,high
+M-1157,Electronics Store 158,5807,Electronics,Lucknow,Uttar Pradesh,North,enterprise,2024-06-25,low
+M-1158,Education Store 159,5518,Education,Hyderabad,Telangana,South,sme,2025-09-30,low
+M-1159,Travel Store 160,5675,Travel,Kolkata,West Bengal,East,mid,2025-06-19,high
+M-1160,Fashion Store 161,5007,Fashion,Bengaluru,Karnataka,South,sme,2026-02-06,medium
+M-1161,Utilities Store 162,5222,Utilities,Ahmedabad,Gujarat,West,sme,2026-06-19,low
+M-1162,Utilities Store 163,5741,Utilities,Patna,Bihar,East,mid,2024-10-28,medium
+M-1163,Fashion Store 164,5125,Fashion,Guwahati,Assam,East,enterprise,2025-05-04,medium
+M-1164,Travel Store 165,5311,Travel,Lucknow,Uttar Pradesh,North,enterprise,2025-08-02,medium
+M-1165,Groceries Store 166,5523,Groceries,Bhubaneswar,Odisha,East,sme,2024-01-09,low
+M-1166,Groceries Store 167,5312,Groceries,Ahmedabad,Gujarat,West,sme,2024-10-29,low
+M-1167,Fashion Store 168,5417,Fashion,Ludhiana,Punjab,North,enterprise,2026-06-15,medium
+M-1168,Pharmacy Store 169,5107,Pharmacy,Bhubaneswar,Odisha,East,sme,2024-04-12,high
+M-1169,Travel Store 170,5296,Travel,Guwahati,Assam,East,enterprise,2024-03-04,high
+M-1170,Utilities Store 171,5370,Utilities,Kolkata,West Bengal,East,mid,2024-09-24,medium
+M-1171,Fuel Store 172,5339,Fuel,Mumbai,Maharashtra,West,mid,2026-03-06,low
+M-1172,Education Store 173,5647,Education,Kolkata,West Bengal,East,mid,2024-03-20,medium
+M-1173,Fashion Store 174,5477,Fashion,Bhubaneswar,Odisha,East,sme,2026-06-06,low
+M-1174,Entertainment Store 175,5161,Entertainment,Guwahati,Assam,East,sme,2025-07-10,low
+M-1175,Groceries Store 176,5005,Groceries,Patna,Bihar,East,sme,2025-10-01,low
+M-1176,Fashion Store 177,5336,Fashion,Bengaluru,Karnataka,South,mid,2024-06-14,medium
+M-1177,Food Delivery Store 178,5642,Food Delivery,Kochi,Kerala,South,enterprise,2026-06-15,high
+M-1178,Travel Store 179,5832,Travel,Bengaluru,Karnataka,South,mid,2024-02-01,low
+M-1179,Entertainment Store 180,5073,Entertainment,Guwahati,Assam,East,enterprise,2025-12-15,medium
+M-1180,Travel Store 181,5424,Travel,Patna,Bihar,East,enterprise,2024-08-17,medium
+M-1181,Fashion Store 182,5677,Fashion,Kochi,Kerala,South,mid,2026-05-12,low
+M-1182,Utilities Store 183,5464,Utilities,Jaipur,Rajasthan,West,sme,2026-06-02,medium
+M-1183,Fashion Store 184,5204,Fashion,Kochi,Kerala,South,sme,2024-07-04,low
+M-1184,Utilities Store 185,5375,Utilities,Kolkata,West Bengal,East,mid,2025-04-01,high
+M-1185,Travel Store 186,5053,Travel,Patna,Bihar,East,mid,2026-03-12,low
+M-1186,Fuel Store 187,5117,Fuel,Lucknow,Uttar Pradesh,North,mid,2024-05-30,low
+M-1187,Entertainment Store 188,5311,Entertainment,Ahmedabad,Gujarat,West,sme,2025-04-09,medium
+M-1188,Groceries Store 189,5311,Groceries,Kolkata,West Bengal,East,sme,2025-11-18,high
+M-1189,Utilities Store 190,5093,Utilities,New Delhi,Delhi,North,mid,2025-06-15,medium
+M-1190,Entertainment Store 191,5201,Entertainment,Jaipur,Rajasthan,West,sme,2024-02-24,high
+M-1191,Pharmacy Store 192,5330,Pharmacy,Guwahati,Assam,East,sme,2024-07-15,low
+M-1192,Fuel Store 193,5076,Fuel,Kochi,Kerala,South,sme,2025-06-24,low
+M-1193,Pharmacy Store 194,5006,Pharmacy,Guwahati,Assam,East,mid,2025-10-16,low
+M-1194,Utilities Store 195,5037,Utilities,Mumbai,Maharashtra,West,mid,2025-01-12,high
+M-1195,Fuel Store 196,5760,Fuel,Guwahati,Assam,East,sme,2024-01-19,high
+M-1196,Electronics Store 197,5371,Electronics,Patna,Bihar,East,sme,2024-09-13,high
+M-1197,Pharmacy Store 198,5613,Pharmacy,Chennai,Tamil Nadu,South,mid,2025-02-26,high
+M-1198,Entertainment Store 199,5786,Entertainment,Ludhiana,Punjab,North,sme,2024-05-15,low
+M-1199,Pharmacy Store 200,5437,Pharmacy,New Delhi,Delhi,North,mid,2025-12-24,medium
+M-1200,Fuel Store 201,5857,Fuel,Bengaluru,Karnataka,South,enterprise,2025-03-18,low
+M-1201,Electronics Store 202,5504,Electronics,Kolkata,West Bengal,East,sme,2024-10-05,medium
+M-1202,Groceries Store 203,5284,Groceries,Hyderabad,Telangana,South,enterprise,2024-01-30,high
+M-1203,Travel Store 204,5693,Travel,Patna,Bihar,East,enterprise,2024-11-27,medium
+M-1204,Electronics Store 205,5388,Electronics,Ahmedabad,Gujarat,West,mid,2025-12-08,low
+M-1205,Entertainment Store 206,5770,Entertainment,New Delhi,Delhi,North,enterprise,2026-01-12,high
+M-1206,Utilities Store 207,5237,Utilities,Bengaluru,Karnataka,South,enterprise,2025-08-20,low
+M-1207,Pharmacy Store 208,5507,Pharmacy,Mumbai,Maharashtra,West,mid,2024-09-01,low
+M-1208,Fashion Store 209,5273,Fashion,Ahmedabad,Gujarat,West,mid,2024-05-24,medium
+M-1209,Fashion Store 210,5077,Fashion,New Delhi,Delhi,North,mid,2026-03-17,low
+M-1210,Food Delivery Store 211,5137,Food Delivery,Ahmedabad,Gujarat,West,enterprise,2024-11-25,low
+M-1211,Fuel Store 212,5845,Fuel,Patna,Bihar,East,mid,2026-04-17,high
+M-1212,Food Delivery Store 213,5196,Food Delivery,Gurugram,Haryana,North,enterprise,2024-01-17,high
+M-1213,Education Store 214,5216,Education,Jaipur,Rajasthan,West,enterprise,2024-05-25,low
+M-1214,Utilities Store 215,5528,Utilities,New Delhi,Delhi,North,enterprise,2025-11-15,medium
+M-1215,Fashion Store 216,5343,Fashion,Bengaluru,Karnataka,South,sme,2024-06-20,low
+M-1216,Fuel Store 217,5780,Fuel,Kolkata,West Bengal,East,enterprise,2025-12-03,high
+M-1217,Travel Store 218,5024,Travel,Gurugram,Haryana,North,sme,2026-04-17,medium
+M-1218,Education Store 219,5591,Education,Lucknow,Uttar Pradesh,North,enterprise,2026-04-10,high
+M-1219,Travel Store 220,5668,Travel,Guwahati,Assam,East,mid,2025-10-01,low
+M-1220,Groceries Store 221,5162,Groceries,Bengaluru,Karnataka,South,sme,2025-07-02,low
+M-1221,Fashion Store 222,5317,Fashion,New Delhi,Delhi,North,sme,2024-06-19,medium
+M-1222,Utilities Store 223,5609,Utilities,Mumbai,Maharashtra,West,sme,2024-11-02,medium
+M-1223,Utilities Store 224,5715,Utilities,Jaipur,Rajasthan,West,sme,2025-10-20,low
+M-1224,Electronics Store 225,5178,Electronics,New Delhi,Delhi,North,sme,2025-08-19,high
+M-1225,Food Delivery Store 226,5010,Food Delivery,New Delhi,Delhi,North,sme,2025-12-28,low
+M-1226,Utilities Store 227,5156,Utilities,Kolkata,West Bengal,East,mid,2025-12-09,low
+M-1227,Education Store 228,5803,Education,Bengaluru,Karnataka,South,mid,2024-05-18,high
+M-1228,Fashion Store 229,5055,Fashion,Gurugram,Haryana,North,mid,2025-08-18,medium
+M-1229,Fashion Store 230,5186,Fashion,Guwahati,Assam,East,enterprise,2024-02-01,medium
+M-1230,Pharmacy Store 231,5110,Pharmacy,Kochi,Kerala,South,sme,2024-05-07,low
+M-1231,Groceries Store 232,5878,Groceries,Bengaluru,Karnataka,South,sme,2024-10-02,low
+M-1232,Travel Store 233,5647,Travel,Guwahati,Assam,East,sme,2025-02-06,high
+M-1233,Education Store 234,5681,Education,New Delhi,Delhi,North,mid,2024-01-14,low
+M-1234,Groceries Store 235,5093,Groceries,New Delhi,Delhi,North,sme,2024-06-30,medium
+M-1235,Pharmacy Store 236,5299,Pharmacy,Bhubaneswar,Odisha,East,sme,2024-11-25,medium
+M-1236,Food Delivery Store 237,5549,Food Delivery,Bengaluru,Karnataka,South,mid,2024-01-19,high
+M-1237,Education Store 238,5507,Education,Patna,Bihar,East,sme,2026-04-13,medium
+M-1238,Pharmacy Store 239,5253,Pharmacy,Kolkata,West Bengal,East,mid,2024-12-05,low
+M-1239,Pharmacy Store 240,5520,Pharmacy,New Delhi,Delhi,North,enterprise,2024-03-27,low

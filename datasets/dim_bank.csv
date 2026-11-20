@@ -1,0 +1,19 @@
+bank_id,bank_name,bank_type,ifsc_prefix,is_payments_bank,npci_business_decline_pct,npci_technical_decline_pct
+B-01,State Bank of India,issuer,STAT,False,10.8693,0.1791
+B-02,HDFC Bank,issuer,HDFC,False,8.1981,0.1303
+B-03,ICICI Bank,issuer,ICIC,False,8.6586,0.73
+B-04,Paytm Payments Bank,issuer,PAYT,True,13.3564,0.2524
+B-05,Axis Bank,issuer,AXIS,False,9.0271,0.1547
+B-06,Punjab National Bank,issuer,PUNJ,False,12.1589,0.2768
+B-07,Bank of Baroda,issuer,BANK,False,11.6062,0.2361
+B-08,Union Bank of India,issuer,UNIO,False,12.3431,0.2687
+B-09,Kotak Mahindra Bank,issuer,KOTA,False,7.9217,0.1221
+B-10,Canara Bank,issuer,CANA,False,11.8826,0.2524
+B-11,Yes Bank,issuer,YES,False,8.3823,0.1465
+B-12,Airtel Payments Bank,issuer,AIRT,True,23.2,0.2117
+B-13,IDFC First Bank,issuer,IDFC,False,7.7375,0.1384
+B-14,IndusInd Bank,issuer,INDU,False,8.1059,0.171
+B-15,Fino Payments Bank,issuer,FINO,True,24.26,0.2279
+B-51,HDFC Bank (Acquiring),acquirer,HDFC,False,,
+B-52,Axis Bank (Acquiring),acquirer,AXIS,False,,
+B-53,ICICI Bank (Acquiring),acquirer,ICIC,False,,

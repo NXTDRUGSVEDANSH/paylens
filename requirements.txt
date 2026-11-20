@@ -1,0 +1,20 @@
+# Core
+duckdb==2.0.1
+numpy==2.5.5
+PyYAML==6.0.3
+sqlglot==30.33.0
+pydantic==2.14.4
+python-dotenv==1.0.1
+
+# LLM (OpenRouter via the OpenAI-compatible SDK — mirrors Fractal AI)
+openai==3.57.0
+
+# Knowledge base / semantic cache
+chromadb==1.5.9
+
+# API
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+
+# Dev
+pytest==8.3.4

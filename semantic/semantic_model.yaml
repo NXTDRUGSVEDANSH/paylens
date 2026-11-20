@@ -1,0 +1,473 @@
+# PayLens semantic model — the single source of truth for metrics, dimensions,
+# joins, access scopes and data-quality behaviour.
+#
+# Nothing in this project may define a metric anywhere else. The LLM never sees the
+# raw database: it sees a schema card rendered from this file, and it may only
+# reference metric/dimension IDs declared here. The guard's allowlist is read from
+# here too, so the list is never maintained twice.
+
+version: sm-2026-11-20-01
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DATASETS
+# ─────────────────────────────────────────────────────────────────────────────
+datasets:
+
+  fact_transactions:
+    label: Transactions
+    description: One row per payment attempt. Retries are separate rows.
+    grain: payment_attempt
+    primary_key: txn_id
+    time_column: txn_ts
+    # Planted defect: a double-ingest window creates exact-duplicate txn_ids.
+    # Every query over this table is de-duplicated by this rule.
+    dedupe_rule: "row_number() over (partition by txn_id order by ingested_at desc) = 1"
+    # Last N days are only partially ingested — drives the incomplete-window caveat.
+    freshness_lag_days: 2
+    system_of_record_for: [txn_count, success_rate, gmv, failure_rate, avg_latency_ms]
+
+  fact_settlements:
+    label: Settlements
+    description: One row per settlement batch paid out to a merchant.
+    grain: settlement_batch
+    primary_key: settlement_id
+    time_column: settlement_date
+    freshness_lag_days: 1
+    # Deliberately NOT the system of record for txn_count — see reconciliation below.
+
+  dim_merchant:
+    label: Merchants
+    grain: merchant
+    primary_key: merchant_id
+
+  dim_bank:
+    label: Banks
+    grain: bank
+    primary_key: bank_id
+
+  dim_payment_method:
+    label: Payment methods
+    grain: payment_method
+    primary_key: pm_id
+
+  dim_failure_code:
+    label: Failure codes
+    grain: failure_code
+    primary_key: failure_code
+
+# ─────────────────────────────────────────────────────────────────────────────
+# METRICS
+# Every ratio metric states its numerator AND denominator explicitly. The
+# denominator choice is the single most common source of disagreement between
+# two "correct" answers, so it is written down, versioned, and shown to the user
+# in the evidence card.
+# ─────────────────────────────────────────────────────────────────────────────
+metrics:
+
+  success_rate:
+    label: Success Rate
+    type: ratio
+    base: fact_transactions
+    numerator: "count(*) filter (where status = 'SUCCESS')"
+    denominator: "count(*) filter (where status in ('SUCCESS','FAILED'))"
+    denominator_note: >
+      PENDING attempts are EXCLUDED from the denominator. A pending attempt has not
+      yet resolved, so counting it as a failure understates the rate. The alternative
+      definition (PENDING counted as failure) is available as success_rate_incl_pending.
+    format: percent
+    decimals: 2
+    decomposable: true          # eligible for mix-vs-rate decomposition
+    higher_is_better: true
+    synonyms: [sr, success%, approval rate, auth rate, conversion]
+
+  success_rate_incl_pending:
+    label: Success Rate (incl. pending as failure)
+    type: ratio
+    base: fact_transactions
+    numerator: "count(*) filter (where status = 'SUCCESS')"
+    denominator: "count(*)"
+    denominator_note: "All attempts counted, including unresolved PENDING."
+    format: percent
+    decimals: 2
+    decomposable: true
+    higher_is_better: true
+    synonyms: [strict success rate]
+
+  failure_rate:
+    label: Failure Rate
+    type: ratio
+    base: fact_transactions
+    numerator: "count(*) filter (where status = 'FAILED')"
+    denominator: "count(*) filter (where status in ('SUCCESS','FAILED'))"
+    format: percent
+    decimals: 2
+    decomposable: true
+    higher_is_better: false
+    synonyms: [decline rate, drop rate]
+
+  txn_count:
+    label: Attempts
+    type: count
+    base: fact_transactions
+    expr: "count(*)"
+    format: integer
+    decomposable: false
+    higher_is_better: true
+    synonyms: [volume, attempts, transactions, count]
+
+  gmv:
+    label: GMV (successful)
+    type: sum
+    base: fact_transactions
+    # Planted defect: a few refund rows carry negative amounts. Excluded here and
+    # reported as a caveat rather than silently netted off.
+    expr: "sum(amount) filter (where status = 'SUCCESS' and amount > 0)"
+    format: currency
+    decimals: 0
+    decomposable: false
+    higher_is_better: true
+    synonyms: [volume value, tpv, total payment volume, revenue]
+
+  avg_ticket:
+    label: Average Ticket Size
+    type: ratio
+    base: fact_transactions
+    numerator: "sum(amount) filter (where status = 'SUCCESS' and amount > 0)"
+    denominator: "count(*) filter (where status = 'SUCCESS' and amount > 0)"
+    format: currency
+    decimals: 2
+    decomposable: false
+    higher_is_better: null
+    synonyms: [aov, average order value, ticket size]
+
+  avg_latency_ms:
+    label: Avg Latency (ms)
+    type: avg
+    base: fact_transactions
+    expr: "avg(latency_ms)"
+    format: number
+    decimals: 0
+    decomposable: false
+    higher_is_better: false
+    synonyms: [latency, response time, speed]
+
+  retry_rate:
+    label: Retry Rate
+    type: ratio
+    base: fact_transactions
+    numerator: "count(*) filter (where is_retry)"
+    denominator: "count(*)"
+    format: percent
+    decimals: 2
+    decomposable: false
+    higher_is_better: false
+    synonyms: [retries]
+
+  settled_amount:
+    label: Net Settled Amount
+    type: sum
+    base: fact_settlements
+    expr: "sum(net_amount)"
+    format: currency
+    decimals: 0
+    decomposable: false
+    higher_is_better: true
+    synonyms: [payout, net settlement, settled]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DIMENSIONS
+# `rbac_scope: true` marks a column usable as a row-level access filter.
+# ─────────────────────────────────────────────────────────────────────────────
+dimensions:
+
+  payment_method:
+    label: Payment Method
+    table: dim_payment_method
+    column: method
+    synonyms: [method, mode, instrument, rail, payment mode, channel]
+    decomposable: true
+    expected_cardinality: 5
+
+  card_network:
+    label: Card Network
+    table: dim_payment_method
+    column: card_network
+    synonyms: [network, scheme]
+    decomposable: true
+
+  card_type:
+    label: Card Type
+    table: dim_payment_method
+    column: card_type
+    synonyms: [credit or debit, card category]
+    decomposable: true
+
+  issuer_bank:
+    label: Issuer Bank
+    table: dim_bank
+    column: bank_name
+    join_via: bank_id
+    synonyms: [bank, issuer, issuing bank, card bank]
+    decomposable: true
+    expected_cardinality: 12
+    # Planted defect: ~2.3% of attempts have a NULL bank_id (UPI/wallet rails).
+    nullable: true
+    null_label: "(unknown issuer)"
+
+  merchant:
+    label: Merchant
+    table: dim_merchant
+    column: merchant_name
+    synonyms: [merchant name, client, store]
+    decomposable: true
+    pii: false
+
+  merchant_id:
+    label: Merchant ID
+    table: fact_transactions
+    column: merchant_id
+    synonyms: [merchant id]
+    decomposable: false
+    rbac_scope: true
+
+  merchant_tier:
+    label: Merchant Tier
+    table: dim_merchant
+    column: tier
+    synonyms: [tier, segment, merchant size]
+    decomposable: true
+    expected_cardinality: 3
+
+  merchant_category:
+    label: Merchant Category
+    table: dim_merchant
+    column: category
+    synonyms: [category, vertical, industry, mcc category]
+    decomposable: true
+
+  state:
+    label: State
+    table: dim_merchant
+    column: state
+    synonyms: [state, province]
+    decomposable: true
+    rbac_scope: true
+
+  region:
+    label: Region
+    table: dim_merchant
+    column: region
+    synonyms: [region, zone]
+    decomposable: true
+    rbac_scope: true
+
+  # A failure code only exists on a FAILED attempt, so these two dimensions are
+  # only defined on that subset. `implies_filter` makes the compiler add the
+  # predicate automatically. Without it, "failures by category" silently includes
+  # a NULL bucket holding every successful attempt, and any rate computed within a
+  # category is definitionally 1.0 — a confidently meaningless answer.
+  failure_category:
+    label: Failure Category
+    table: dim_failure_code
+    column: category
+    synonyms: [failure reason, decline reason, error category, why failed]
+    decomposable: true
+    implies_filter: "t.status = 'FAILED'"
+
+  failure_owner:
+    label: Failure Owner
+    table: dim_failure_code
+    column: owner
+    synonyms: [whose fault, responsible party, owner]
+    decomposable: true
+    implies_filter: "t.status = 'FAILED'"
+
+  is_tokenized:
+    label: Tokenized
+    table: dim_payment_method
+    column: is_tokenized
+    synonyms: [token, tokenised]
+    decomposable: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TIME GRAINS
+# ─────────────────────────────────────────────────────────────────────────────
+time_grains:
+  hour:  { expr: "date_trunc('hour', {col})",  label: Hour }
+  day:   { expr: "date_trunc('day', {col})",   label: Day,   default: true }
+  week:  { expr: "date_trunc('week', {col})",  label: Week }
+  month: { expr: "date_trunc('month', {col})", label: Month }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JOINS — the only join paths the compiler may use. One entry per edge.
+# ─────────────────────────────────────────────────────────────────────────────
+joins:
+  - { left: fact_transactions, left_on: merchant_id,       right: dim_merchant,       right_on: merchant_id,   type: left }
+  - { left: fact_transactions, left_on: bank_id,           right: dim_bank,           right_on: bank_id,       type: left, alias: issuer }
+  - { left: fact_transactions, left_on: acquirer_bank_id,  right: dim_bank,           right_on: bank_id,       type: left, alias: acquirer }
+  - { left: fact_transactions, left_on: pm_id,             right: dim_payment_method, right_on: pm_id,         type: left }
+  - { left: fact_transactions, left_on: failure_code,      right: dim_failure_code,   right_on: failure_code,  type: left }
+  - { left: fact_settlements,  left_on: merchant_id,       right: dim_merchant,       right_on: merchant_id,   type: left }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GUARD ALLOWLIST — read directly by backend/core/guard.py (checks 4 and 5).
+# ─────────────────────────────────────────────────────────────────────────────
+allowlist:
+  tables:
+    - fact_transactions
+    - fact_settlements
+    - dim_merchant
+    - dim_bank
+    - dim_payment_method
+    - dim_failure_code
+  # Functions that can read the filesystem or shell out. DuckDB ships several.
+  functions_denied:
+    - read_csv
+    - read_csv_auto
+    - read_parquet
+    - read_json
+    - read_json_auto
+    - read_text
+    - read_blob
+    - glob
+    - copy
+    - install
+    - load
+    - attach
+    - detach
+    - shell
+    - system
+    - getenv
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROLE-BASED ACCESS CONTROL
+# Row filters are injected into the SQL AST by backend/core/rbac.py, never
+# requested in a prompt. `scope_column` must carry rbac_scope: true above.
+# ─────────────────────────────────────────────────────────────────────────────
+rbac:
+  roles:
+
+    cxo:
+      label: CXO / Leadership
+      row_scope: null                       # unrestricted
+      masked_columns: []
+      denied_metrics: []
+      persona: >
+        You are presenting to a payments business leader. Lead with the single most
+        important business implication. Quantify in percentage points and absolute
+        volume. Be decisive about what is and is not proven.
+
+    regional_manager:
+      label: Regional Manager
+      row_scope:
+        dimension: region
+        claim: region                       # value comes from the principal's claims
+      masked_columns: []
+      denied_metrics: [settled_amount]      # payouts are finance-only
+      persona: >
+        You are supporting a regional manager. Frame findings around the merchants and
+        banks in their region. Compare against the region's own history, not other regions.
+
+    merchant_user:
+      label: Merchant User
+      row_scope:
+        dimension: merchant_id
+        claim: merchant_id
+        table: fact_transactions
+      masked_columns:
+        - dim_merchant.merchant_name        # other merchants' identities
+        - fact_transactions.terminal_id
+      denied_metrics: []
+      persona: >
+        You are supporting a single merchant looking at their own payment performance.
+        Never reference other merchants by name. Offer category benchmarks instead.
+
+    analyst:
+      label: Data Analyst
+      row_scope: null
+      masked_columns:
+        - fact_transactions.terminal_id
+      denied_metrics: []
+      persona: >
+        You are talking to a data analyst. Be precise about grain, denominators and
+        join fan-out. Surface data-quality concerns prominently and do not round away
+        detail that affects interpretation.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DATA QUALITY — checks run against the tables a query actually touched.
+# Severity: info (note it) | warn (deduct confidence) | block (refuse to answer)
+# ─────────────────────────────────────────────────────────────────────────────
+data_quality:
+
+  checks:
+    - id: duplicate_pk
+      dataset: fact_transactions
+      severity: warn
+      kind: duplicate_primary_key
+      message: >
+        {n} duplicate {pk} rows found in this window. Results are de-duplicated by the
+        latest ingested_at, so each attempt is counted once.
+
+    - id: null_issuer
+      dataset: fact_transactions
+      column: bank_id
+      severity: warn
+      kind: null_rate
+      threshold: 0.005
+      message: >
+        {pct} of attempts in this window are not attributed to an issuer bank (some UPI
+        and wallet flows arrive without issuer attribution). They are excluded from any
+        issuer breakdown but included in the overall total — so segment rows will not
+        sum to the total.
+
+    - id: incomplete_window
+      dataset: fact_transactions
+      severity: warn
+      kind: freshness
+      message: >
+        The most recent {lag_days} day(s) are only partially ingested ({pct} of expected
+        volume). The window was trimmed to end {trimmed_to} to avoid a false downward trend.
+
+    - id: negative_amount
+      dataset: fact_transactions
+      column: amount
+      severity: info
+      kind: range
+      expect: "amount > 0"
+      message: >
+        {n} rows carry a negative amount (refunds mislabelled as payments). They are
+        excluded from GMV and average ticket.
+
+    - id: settlement_mismatch
+      dataset: fact_settlements
+      severity: warn
+      kind: cross_source_reconciliation
+      message: >
+        fact_settlements reports {settled_count} attempts for {merchant}; fact_transactions
+        counts {txn_count} ({delta_pct}). Settlements exclude refunded and held batches.
+        Reported figure uses fact_transactions.
+
+  # Which source wins when two datasets disagree, and WHY. Used verbatim in the
+  # caveat so the user is never left guessing which number they received.
+  reconciliation:
+    - metric: txn_count
+      sources: [fact_transactions, fact_settlements]
+      precedence: fact_transactions
+      reason: >
+        fact_transactions is the system of record at payment-attempt grain.
+        fact_settlements is a downstream payout view that excludes refunded and
+        held batches, so it systematically undercounts attempts.
+      report_delta: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ANALYSIS INTENTS — drive routing, chart choice and the row-cap decision.
+# `aggregate: false` is the only intent allowed to truncate instead of block.
+# ─────────────────────────────────────────────────────────────────────────────
+intents:
+  single_value:   { aggregate: true,  label: One number }
+  trend:          { aggregate: true,  label: Over time }
+  breakdown:      { aggregate: true,  label: By segment }
+  compare:        { aggregate: true,  label: Two periods or cohorts }
+  explain_change: { aggregate: true,  label: Why did it move, needs_decomposition: true }
+  rank:           { aggregate: true,  label: Top / bottom N }
+  detail:         { aggregate: false, label: Individual rows }

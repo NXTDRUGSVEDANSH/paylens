@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.git
+.gitignore
+.pytest_cache/
+node_modules/
+.venv/
+data/*.duckdb
+data/*.duckdb.wal
+data/chroma_db/

@@ -1,0 +1,55 @@
+# Pre-seeded question->SQL cache.
+#
+# `demo: true` entries are the five demo questions, seeded verbatim so they hit the
+# tier-1 fast path and cannot fail live. The rest give few-shot coverage of the
+# common metric x dimension shapes.
+#
+# Seeds are built by running the DETERMINISTIC path (resolve -> compile -> execute)
+# and keeping only questions whose SQL actually runs and returns rows, so a broken
+# seed can never enter the cache. Run: python -m scripts.seed_kb
+
+questions:
+  # ── the five demo questions ────────────────────────────────────────────────
+  - q: "why did our overall success rate drop last week"
+    demo: true
+  - q: "how many transactions did merchant M-1042 process in October"
+    demo: true
+  - q: "what is our success rate"
+    demo: true
+  - q: "show me success rate by payment method last week vs the week before"
+    demo: true
+  - q: "success rate by issuer bank last week"
+    demo: true
+
+  # ── coverage: success rate across dimensions ───────────────────────────────
+  - q: "success rate by payment method last week"
+  - q: "success rate by merchant tier last week"
+  - q: "success rate by state last week"
+  - q: "success rate by card network last week"
+  - q: "success rate by failure owner last week"
+  - q: "failure rate by payment method last week"
+  - q: "success rate daily for the last 30 days"
+  - q: "success rate by payment method daily for the last 14 days"
+
+  # ── volume and value ──────────────────────────────────────────────────────
+  - q: "how many attempts did we process last week"
+  - q: "gmv by merchant tier last week"
+  - q: "gmv by payment method last month"
+  - q: "top 10 merchants by gmv last month"
+  - q: "average ticket size by payment method last week"
+  - q: "total gmv daily for the last 30 days"
+
+  # ── failures and latency ──────────────────────────────────────────────────
+  - q: "failure rate by issuer bank last week"
+  - q: "average latency by payment method last week"
+  - q: "retry rate by payment method last week"
+  - q: "how many failed attempts by failure category last week"
+
+  # ── comparisons and explanations ──────────────────────────────────────────
+  - q: "success rate last month vs the month before"
+  - q: "why did success rate change by issuer bank last week"
+  - q: "gmv last week vs the week before"
+  - q: "compare success rate by merchant tier last week vs the week before"
+
+  # ── settlements ───────────────────────────────────────────────────────────
+  - q: "net settled amount by merchant tier last month"

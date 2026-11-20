@@ -1,0 +1,9 @@
+pm_id,method,card_network,card_type,is_tokenized
+PM-01,UPI,,,False
+PM-02,CARD,VISA,credit,True
+PM-03,CARD,VISA,debit,False
+PM-04,CARD,MASTERCARD,credit,True
+PM-05,CARD,RUPAY,debit,False
+PM-06,NETBANKING,,,False
+PM-07,WALLET,,,True
+PM-08,EMI,VISA,credit,True
