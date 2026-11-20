@@ -87,6 +87,8 @@ _state: dict[str, Any] = {}
 
 
 def available() -> bool:
+    if getattr(config, "DISABLE_CHROMA", False):
+        return False
     try:
         get_kb()
         return True

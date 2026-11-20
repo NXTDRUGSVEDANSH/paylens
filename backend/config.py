@@ -37,6 +37,7 @@ EXPLAIN_SCAN_LIMIT = int(os.getenv("EXPLAIN_SCAN_LIMIT", "50000000"))
 SQL_TIMEOUT_S = int(os.getenv("SQL_TIMEOUT_S", "10"))
 
 # ── Caching ──
+DISABLE_CHROMA = os.getenv("DISABLE_CHROMA", "false").lower() in ("true", "1", "yes")
 ANSWER_CACHE_TTL = int(os.getenv("ANSWER_CACHE_TTL", "600"))
 ANSWER_CACHE_SIZE = int(os.getenv("ANSWER_CACHE_SIZE", "256"))
 CACHE_T1 = float(os.getenv("CACHE_T1", "0.95"))     # reuse SQL, no planner call

@@ -22,7 +22,7 @@ def connect() -> duckdb.DuckDBPyConnection:
             if not config.DUCKDB_PATH.exists():
                 raise FileNotFoundError(
                     f"{config.DUCKDB_PATH} not found — run `python data/generate.py` first")
-            _con = duckdb.connect(str(config.DUCKDB_PATH), read_only=True)
+            _con = duckdb.connect(str(config.DUCKDB_PATH), read_only=True, config={"memory_limit": "256MB"})
         return _con
 
 
